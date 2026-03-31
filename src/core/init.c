@@ -55,3 +55,8 @@ int init (void){
 
     return EXIT_SUCCESS;
 }
+
+int system_call (char * cmd){
+    //execute the command and return the output
+    return 0;
+}
