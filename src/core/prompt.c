@@ -17,6 +17,7 @@ int set_prompt (void){
         prompt->prompt_item = '#';
     }
 
+    sprintf(prompt->prompt, "%s@%s:~%c", prompt->username, prompt->hostname, prompt->prompt_item);
     
-
+    return 0;
 }
