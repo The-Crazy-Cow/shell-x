@@ -5,15 +5,18 @@
 PROMPT * prompt;
 
 /* 
-    get the path prompt_file to init the structure PROMPT to init the prompt 
+    set the prompt and the tty infos which depends of it
 */
-void init_prompt (unsigned char  prompt_file){
-    prompt->prompt_file_fd = open((char *) prompt_file,O_RDONLY);
-    if(prompt->prompt_file_fd == -1){
-        //error 
+int set_prompt (void){
+
+    if(prompt->username != "root"){
+        prompt->priority = 1;
+        prompt->prompt_item = '$';
+    } else {
+        prompt->priority = 0;
+        prompt->prompt_item = '#';
     }
 
-    //get the hostname,
-    int ret;
+    
 
 }
