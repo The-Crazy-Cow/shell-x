@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 PROMPT * prompt;
 
@@ -11,7 +12,7 @@ PROMPT * prompt;
 */
 int set_prompt (void){
 
-    if(prompt->username != "root"){
+    if(strcmp( prompt->username, "root") == 0){
         prompt->priority = 1;
         prompt->prompt_item = '$';
     } else {
@@ -19,7 +20,7 @@ int set_prompt (void){
         prompt->prompt_item = '#';
     }
 
-    sprintf(prompt->prompt, "%s@%s:~%c", prompt->username, prompt->hostname, prompt->prompt_item);
+    sprintf(prompt->prompt, "%s@%s:~%c", prompt->username,  prompt->hostname, prompt->prompt_item);
 
     return 0;
 }
@@ -32,7 +33,7 @@ int enter_prompt(void){
         fflush(stdout);
         //wait for the user input 
         errno = 0;
-        if (fgets(prompt->INPUT_USR, INPUT_BUFFER_SIZE, stdin) == NULL) {
+        if (fgets( prompt->INPUT_USR, INPUT_BUFFER_SIZE, stdin) == NULL) {
             if (errno != 0) {
                 perror("Error reading from stdin");
             }
@@ -42,7 +43,7 @@ int enter_prompt(void){
         while ((c = getchar()) != '\n' && c != EOF); //to clear the input buffer 
 
         prompt->INPUT_USR[strcspn(prompt->INPUT_USR, "\n")] = '\0';
-        printf("%s\n", system_call(prompt->INPUT_USR)); 
+        printf("%d\n", system_call(prompt->INPUT_USR)); 
 
         //set the return variables and env
     }

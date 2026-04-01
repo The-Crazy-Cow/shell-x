@@ -1,10 +1,11 @@
-#include "init.h"
+#include "sh_kern.h"
 #include "prompt.h"
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 //optimisation => fscanf function and "%s"
 /***********************************************************************************************
@@ -19,6 +20,10 @@ int init_user_info(void){
     //get the user info from prompt
     //decrypt the user info
     //store the user info in the dbfile
+    #ifdef DEBUG
+    printf("Initializing user info...\n");
+    #endif
+    
     return 0;
 }
 
@@ -43,9 +48,10 @@ int init (void){
     }
 
     //initialization
-    int ret =  fscanf(fd,  "%s"
-                            "" 
-                            "%s");
+    //int ret =  fscanf(fd,  ""
+      //                     "" 
+       //                    "");
+       int ret = 2;
                     
     if (ret != 2) {
         perror("Error reading from " DB_FILE);
@@ -58,5 +64,11 @@ int init (void){
 
 int system_call (char * cmd){
     //execute the command and return the output
+    #ifdef DEBUG
+    printf("Executing command: \n");
+    #endif
+
+    (void) cmd; //to avoid unused parameter warning
+        
     return 0;
 }
