@@ -65,7 +65,7 @@ int init (void){
 int system_call (char * cmd){
     //execute the command and return the output
     #ifdef DEBUG
-    printf("Executing command: \n");
+    printf("Executing command: \n")
     #endif
 
     (void) cmd; //to avoid unused parameter warning
