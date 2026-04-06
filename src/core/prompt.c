@@ -12,10 +12,12 @@
 */
 
 PROMPT_T prompt;
+static void __prompt (); //declares on at the bottom of the file
 
 //init the prompt design
-int init_prompt(char * prompt_fm){
-    strcpy(prompt.prompt,prompt_fm);
+int init_prompt(){
+    snprintf(prompt.prompt,BUFFER-1,"%s@%s$",sys.username,sys.hostname);
+    sys.prompt = &prompt;
     return EXIT_SUCCESS;
 }
 
@@ -25,12 +27,16 @@ int print(char *msg){
     pr_debug("in print");
     #endif
 
-    if(sizeof(msg)>BUFFER-1){ //see to make an log file 
-        printf("msg len is too long");
+    if(!strlen(msg)){ //avoid to 
+        perror("printing object is null");
         return EXIT_FAILURE;
     }
-    strncpy(prompt.io_buffer, msg, BUFFER - 1);
-    prompt.io_buffer[sizeof(msg)- 1] = '\0'; //avoid strlen(prompt.io_buffer) - 1 : when strlen=0 can be an membug can use BUFF-1
+    if(strlen(msg)>BUFFER-1){ //see to make an log file 
+        perror("msg len is too long");
+        return EXIT_FAILURE;
+    }
+    strncpy(prompt.io_buffer, msg, strlen(msg)+1);
+    prompt.io_buffer[strlen(msg)] = '\0'; //avoid strlen(prompt.io_buffer) - 1 : when strlen=0 can be an membug can use BUFF-1
 
     __prompt();
     return EXIT_SUCCESS;
@@ -60,8 +66,7 @@ int get_prompt(char *msg,char *ret){
 }
 
 //internal functions which handle low level the prompt
-void __prompt (void){
-
+static void __prompt (void){
     #ifdef DEBUG
     pr_debug("in prompt");
     #endif
@@ -80,7 +85,9 @@ void __prompt (void){
                 _exit(1);
             }
             prompt.io_buffer[strcspn(prompt.io_buffer, "\n")] = '\0'; 
-            sysanalyze(); //pass the handle to the system core to analyze ans return to user ; check the sys.lastcallstatus variable in the core.h in sys structure
+            
+            if(strlen(prompt.io_buffer))
+                sysanalyze(); //pass the handle to the system core to analyze ans return to user ; check the sys.lastcallstatus variable in the core.h in sys structure
         }
         prompt.io_buffer[0]='\0';
     }

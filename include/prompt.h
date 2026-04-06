@@ -2,7 +2,7 @@
 #define PROMPT_H
 
 #include "utils.h"
-#include "core.h"
+#define BUFFER 0x400 //the default buffer for every sys' varaible
 
 typedef struct prompt {
 
@@ -13,10 +13,9 @@ typedef struct prompt {
 
 extern PROMPT_T prompt;
 
-void __prompt(void);
 int get_prompt(char *msg,char *ret);
 int print(char *msg);
-int init_prompt(char *prompt_fm);
+int init_prompt();
 
 
 #endif

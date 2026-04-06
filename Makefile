@@ -11,11 +11,12 @@ SRC     = src
 MAIN    = $(SRC)/main.c
 CORE    = $(SRC)/core
 
-# set gcc options
+# set gcc options 
 CC     = gcc
 CFLAGS = -Wall -Werror -Wextra -O2
 ifeq ($(DEBUG),true)
-	CFLAGS += -DDEBUG -g -O0
+	CFLAGS += -DDEBUG -g -O0  
+#see also gcc fsanitize and his options  for gdb
 endif
 
 # sources and object files
@@ -39,10 +40,21 @@ $(OBJ)/main.o : $(MAIN)
 
 clean:
 	@echo "Cleaning all .o files..."
-	rm -rf $(OBJ)/*
+	rm -rf $(OBJ)/* 
 
 mrproper: clean
 	@echo "Cleaning all generated files..."
-	rm -rf $(BUILD)/* $(LIB)/*
+	rm -rf $(BUILD)/* $(LIB)/* 
+
+#use only for some internal tests
+do_test:
+	$(CC) tests.c -o test
+	@echo "running test result\n\n"
+	./test
+
+clean_test:
+	rm -rf test
+
+##################################
 
 .PHONY: all clean mrproper
