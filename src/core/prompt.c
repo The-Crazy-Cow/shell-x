@@ -35,7 +35,7 @@ int print(char *msg){
         perror("msg len is too long");
         return EXIT_FAILURE;
     }
-    strncpy(prompt.io_buffer, msg, strlen(msg)+1);
+    strcpy(prompt.io_buffer, msg);
     prompt.io_buffer[strlen(msg)] = '\0'; //avoid strlen(prompt.io_buffer) - 1 : when strlen=0 can be an membug can use BUFF-1
 
     __prompt();

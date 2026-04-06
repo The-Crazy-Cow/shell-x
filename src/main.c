@@ -9,6 +9,7 @@ int main (int argc, char * argv[] , char *envp[]){
 
     //lunch the init
     init();
+    puts("jean");
 
     return 0;
 }
