@@ -1,3 +1,10 @@
+/*@
+*define the prompt mechanism
+*the __prompt function is the low level function which handle outuput and input 
+*of the current prompt
+*the prompt is get by wrapper like getprompt and print : see above
+*
+@*/
 #include "prompt.h"
 #include "core.h"
 
@@ -7,18 +14,15 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-/*
-    defines fonctions to handle the prompt mechanisms, see prompt.h which define prompt variables
-*/
-
 PROMPT_T prompt;
 static void __prompt (); //declares on at the bottom of the file
 
-//init the prompt design
-int init_prompt(){
+//init the prompt design abd lunch the prompt
+//call single time at the load time
+void init_prompt(){
     snprintf(prompt.prompt,BUFFER-1,"%s@%s$",sys.username,sys.hostname);
     sys.prompt = &prompt;
-    return EXIT_SUCCESS;
+    __prompt();
 }
 
 //print on the prompt
@@ -79,6 +83,7 @@ static void __prompt (void){
         //check if the io buffer contains something to print 
         if(strlen(prompt.io_buffer)!=0){
             printf("%s\n",prompt.io_buffer);
+            break; //to avoid loop endless
         }else{
             if(!fgets(prompt.io_buffer,BUFFER-1,stdin)){
                 perror("error on stdin ");

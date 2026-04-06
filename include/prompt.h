@@ -15,7 +15,7 @@ extern PROMPT_T prompt;
 
 int get_prompt(char *msg,char *ret);
 int print(char *msg);
-int init_prompt();
+void init_prompt();
 
 
 #endif

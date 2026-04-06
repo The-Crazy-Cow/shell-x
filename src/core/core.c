@@ -40,7 +40,6 @@ int init (){
 
     //enter in prompt
     init_prompt(); 
-    print("bonjour");
 
     return 0;
 }
@@ -61,7 +60,6 @@ void sysanalyze(){
         @*/
         func_t syscall = (func_t)(uintptr_t) sys.syscalls[sys.lastcallstatus][0];
         sys.lastcallstatus= syscall(syscall_args);
-        
     }
     //free(syscall_args);
 }
@@ -79,7 +77,7 @@ int valid_syscall(const char * cmd_sample,char *syscall_args){
     char * pos = strchr(sample,' ');
     if(pos!=0){
         *pos='\0';
-        strcpy(syscall_args,pos+1);//get the args
+        strcpy(syscall_args,pos+1);//get the args of the cmdline
     }
 
     for(int i=0;;i++){

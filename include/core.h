@@ -3,10 +3,12 @@
 
 #include "prompt.h"
 
-#define MAX_SYSCALLS_NAME_LEN 0x0FF
+#define MAX_SYSCALLS_NAME_LEN 0x0FF //maximal length of the syscalls name
 #define __SYSCALL__(func_name,syscall_name) {(char *) &func_name,syscall_name},
 
 //for to cast the char in function pointer
+//cause the adress of syscalls are in char * syscall tab need to perform
+//cast is cover by this type en function sysanalyse: see core.c file
 typedef int (*func_t)(char *chain);
 
 typedef struct sys_structure{
@@ -19,7 +21,6 @@ typedef struct sys_structure{
 }SYS_STRUCTURE;
 
 extern SYS_STRUCTURE sys;
-
 
 int init(void);
 void sysanalyze();
