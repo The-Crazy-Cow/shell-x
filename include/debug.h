@@ -1,14 +1,11 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+//======= besause developpement ======
+//#define DEBUG 1
+//#define DEBUG_FLAGS 0x0F //all bits are on 
+
 #include <stdio.h>
-
-#ifdef DEBUG
-
-//LOGS DESTINATION HANDLE
-#ifndef LOG_STREAM
-#define LOG_STREAM stderr
-#endif
 
 //========== L O G   L E V E L S =========
 #define LOG_LEVEL_ERROR 0x01   //ERROS
@@ -17,6 +14,12 @@
 #define LOG_LEVEL_DEBUG 0x08    //SIMPLE DEBUGGING
 //=========================================
 
+#ifdef DEBUG
+
+//LOGS DESTINATION HANDLE
+#ifndef LOG_STREAM
+#define LOG_STREAM stderr
+#endif
 
 #define pr_debug(fmt,...) \
     fprintf(LOG_STREAM,"\nin %s::%s::%d::" fmt "\n",__func__,__FILE__,__LINE__,##__VA_ARGS__) 
