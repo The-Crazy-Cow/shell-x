@@ -1,4 +1,14 @@
+#===== d e b u g =====
 DEBUG ?= false
+DEBUG_FLAGS?=4
+#========== L O G   L E V E L S ============
+#LOG_LEVEL_ERROR 1   //ERROS
+#LOG_LEVEL_WARN  2    //WARNINGS
+#LOG_LEVEL_INFO  4    //INFORMATIONELS
+#LOG_LEVEL_DEBUG 8    //SIMPLE DEBUGGING
+#eg: 1+2: set two levels on
+#===========================================
+
 EXEC = mt
 
 # build directories
@@ -15,7 +25,7 @@ CORE    = $(SRC)/core
 CC     = gcc
 CFLAGS = -Wall -Werror -Wextra -O2
 ifeq ($(DEBUG),true)
-	CFLAGS += -DDEBUG -g -O0  
+	CFLAGS += -DDEBUG -DDEBUG_FLAGS=$(DEBUG_FLAGS) -g -O0  
 #see also gcc fsanitize and his options  for gdb
 endif
 
