@@ -3,14 +3,15 @@
 cmake_minimum_required(VERSION 3.10)
 project(shell-x LANGUAGES C)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 file(GLOB_RECURSE FORMAT_FILES
-    "${CMAKE_SOURCE_DIR}/src/core/*.c"
-    "${CMAKE_SOURCE_DIR}/src/main.c"
-    "${CMAKE_SOURCE_DIR}/include/*.h"
-    "${CMAKE_SOURCE_DIR}/include/*.c"
-    "${CMAKE_SOURCE_DIR}/utils/*.h"
-    "${CMAKE_SOURCE_DIR}/utils/*.c"
+    CONFIGURE_DEPENDS
+    "${CMAKE_SOURCE_DIR}/*.c"
+    "${CMAKE_SOURCE_DIR}/*.h"
 )
+
+list(FILTER FORMAT_FILES EXCLUDE REGEX "^${CMAKE_SOURCE_DIR}/build/")
 
 #------| formating code text with clang-format
 find_program(CLANG_FORMAT_BIN NAMES clang-format clang-format-16 clang-format-15)

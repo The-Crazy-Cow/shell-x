@@ -13,17 +13,17 @@ target_compile_features(${PROJECT_NAME} PRIVATE
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
-    $<$<CONFIG:Debug>:DEBUG>
+    DEBUG
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/src/core/cli
 )
 
 target_compile_options(${PROJECT_NAME} PRIVATE
     -Wall
     -Wextra
-    -Wpedantic
     -Wshadow
     -Werror
     -Wconversion
