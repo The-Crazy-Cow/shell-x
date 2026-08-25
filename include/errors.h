@@ -6,12 +6,14 @@
 #if defined(DEBUG)
 #include "debug.h"
 
-//errors
+// errors
 #define ER_NULL_PTR pr_error("Null pointer")
+#define ER_INV_BUFFSIZE                                                        \
+    pr_error("buffer size out of range or exceed which indeed")
+// warnings
 
-//warnings
-
-//avoiding buffer overflow by truncating the buffer to the maximum length defined in prompt.h
+// avoiding buffer overflow by truncating the buffer to the maximum length
+// defined in prompt.h
 #define WR_TRUNCATE_BUFFER pr_warn("Truncate buffer")
 
 #endif /*DEBUG*/
