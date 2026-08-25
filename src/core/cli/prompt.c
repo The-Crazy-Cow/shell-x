@@ -42,16 +42,16 @@ int set_prompt(const char *prompt_str)
     return 0;
 }
 
-size_t get_prompt(char *buffer, size_t buffer_size)
+int get_prompt(char *buffer, size_t buffer_size)
 {
     if (!buffer) {
         ER_NULL_PTR;
-        return 0;
+        return -1;
     } else if (buffer_size < PROMPT_MAX_LENGTH) {
         WR_TRUNCATE_BUFFER;
     }
     snprintf(buffer, buffer_size, "%s", prompt.prompt);
-    return buffer_size;
+    return 0;
 }
 
 /**
@@ -64,17 +64,24 @@ size_t get_prompt(char *buffer, size_t buffer_size)
  * @param buffer_size Size of the destination buffer in bytes.
  * @return buffer on success, or NULL if buffer is NULL.
  */
-char *get_user_input(char *buffer, size_t buffer_size)
+ssize_t get_user_input(char *buffer, size_t buffer_size)
 {
+    ssize_t ret = 0;
+
     if (IS_NULL_PTR(buffer)) {
-        return NULL;
+        goto out;
     } else if (buffer_size < USER_INPUT_MAX_LENGTH) {
         WR_TRUNCATE_BUFFER;
+    }else if(0==buffer_size){
+        ret = -1;
+        pr_warn("buffer size = 0");
+        goto out;
     }
-
-    snprintf(buffer, buffer_size, "%s", prompt.user_input);
-    return buffer;
+    
+out:
+    return ret;
 }
+
 
 /**
  * @brief Display a message to the shell user.
@@ -92,6 +99,7 @@ void print_to_user(const char *msg)
 void print_prompt(void)
 {
     print("%s", prompt.prompt);
+    fflush(stdout);
 }
 
 /** Clear the stored user input. */
@@ -120,7 +128,7 @@ void reset_prompt(void)
  */
 void prompt_init(const char *prompt_str)
 {
-    pr_info("Initializing prompt with: %s", prompt_str ? prompt_str : "NULL");
+    pr_info("Initializing prompt");
 
     if (!prompt_str) {
         set_prompt(PROMPT_DEFAULT);
