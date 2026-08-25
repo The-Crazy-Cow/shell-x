@@ -2,7 +2,7 @@
 
 /**
  * @file      debug.c
- * @author    alice
+ * @author    jd
  * @brief     Log level management.
  * @version   0.1
  * @date      2026-08-18

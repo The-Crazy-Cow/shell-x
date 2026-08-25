@@ -12,12 +12,39 @@
  */
 
 #include "prompt.h"
+#include "debug.h"
 #include "errors.h"
+#include <errno.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 /** Prompt state kept private to this translation unit. */
 static struct prompt_struct prompt;
+
+static inline ssize_t user_input(size_t bytes_to_read)
+{
+    ssize_t n_read;
+
+    if (bytes_to_read < 2 || bytes_to_read > USER_INPUT_MAX_LENGTH) {
+        ER_INV_BUFFSIZE;
+        return -1;
+    }
+
+    do {
+        n_read = read(STDIN_FILENO, prompt.user_input, bytes_to_read - 1);
+    } while (n_read == -1 && errno == EINTR);
+    if (n_read == -1) {
+        pr_error("user input()-> %d", errno);
+        return -1;
+    }
+    prompt.user_input[n_read] = '\0';
+
+    pr_debug("%zd bytes read", n_read);
+
+    return n_read;
+}
 
 /**
  * @brief Store a new prompt string.
@@ -47,6 +74,9 @@ int get_prompt(char *buffer, size_t buffer_size)
     if (!buffer) {
         ER_NULL_PTR;
         return -1;
+    } else if (buffer_size == 0) {
+        ER_INV_BUFFSIZE;
+        return -1;
     } else if (buffer_size < PROMPT_MAX_LENGTH) {
         WR_TRUNCATE_BUFFER;
     }
@@ -66,22 +96,31 @@ int get_prompt(char *buffer, size_t buffer_size)
  */
 ssize_t get_user_input(char *buffer, size_t buffer_size)
 {
-    ssize_t ret = 0;
+    ssize_t n_read;
+    size_t read_size = buffer_size;
 
     if (IS_NULL_PTR(buffer)) {
-        goto out;
-    } else if (buffer_size < USER_INPUT_MAX_LENGTH) {
-        WR_TRUNCATE_BUFFER;
-    }else if(0==buffer_size){
-        ret = -1;
-        pr_warn("buffer size = 0");
-        goto out;
+        return -1;
     }
-    
-out:
-    return ret;
-}
 
+    if (buffer_size < 2) {
+        ER_INV_BUFFSIZE;
+        return -1;
+    }
+
+    if (read_size > USER_INPUT_MAX_LENGTH) {
+        read_size = USER_INPUT_MAX_LENGTH;
+        WR_TRUNCATE_BUFFER;
+    }
+
+    n_read = user_input(read_size);
+    if (n_read < 0) {
+        return -1;
+    }
+
+    snprintf(buffer, buffer_size, "%s", prompt.user_input);
+    return n_read;
+}
 
 /**
  * @brief Display a message to the shell user.
