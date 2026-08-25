@@ -9,6 +9,8 @@
 #define ER_NULL_PTR pr_error("Null pointer")
 #define ER_INV_BUFFSIZE                                                        \
     pr_error("buffer size out of range or exceed which indeed")
+#define ER_OUT_OF_RANGE pr_error("value out of range or exceed which indeed")
+
 // warnings
 
 // avoiding buffer overflow by truncating the buffer to the maximum length

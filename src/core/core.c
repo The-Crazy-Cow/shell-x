@@ -6,15 +6,13 @@
  * @brief Manage the shell internals.
  * @version 0.1
  * @date 2026-08-24
- * 
- * @copyright Copyright (c) 2026
- * 
+ *
+ * @copyright GNU General Public License v2.0
+ *
  */
 
 #include "core.h"
 #include "errors.h"
-
-
 
 /** Current execution status of the shell. */
 static unsigned int shell_status = RUNNING;
@@ -38,7 +36,7 @@ unsigned int get_shell_status(void)
 int set_shell_status(unsigned int status)
 {
     if (status >= NSHELL_STATUS) {
-        OUT_OF_RANGE;
+        ER_OUT_OF_RANGE;
         return -1;
     }
 
