@@ -11,6 +11,9 @@
     pr_error("buffer size out of range or exceed which indeed")
 #define ER_OUT_OF_RANGE pr_error("value out of range or exceed which indeed")
 
+#define ER_INCOHERENT_LIST_SIZE -1
+#define ER_NOT_BELONGS_TO_LIST -2
+
 // warnings
 
 // avoiding buffer overflow by truncating the buffer to the maximum length
